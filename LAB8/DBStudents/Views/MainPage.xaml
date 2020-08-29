@@ -1,0 +1,47 @@
+﻿<Page
+    x:Class="DBStudents.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DBStudents.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:DBStudents.ViewModels"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <vm:MainPageViewModel/>
+    </Page.DataContext>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ListView Header="Complied" ItemsSource="{x:Bind ViewModel.Items}" Grid.Column="0" xmlns:m="using:DBStudents.Models">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="m:TodoStudent">
+                    <TextBlock Text="{x:Bind ID}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ListView Header="Complied" ItemsSource="{x:Bind ViewModel.Items}" Grid.Column="1" xmlns:m="using:DBStudents.Models">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="m:TodoStudent">
+                    <TextBlock Text="{x:Bind Name}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ListView Header="Complied" ItemsSource="{x:Bind ViewModel.Items}" Grid.Column="2" xmlns:m="using:DBStudents.Models">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="m:TodoStudent">
+                    <TextBlock Text="{x:Bind GPA }"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
