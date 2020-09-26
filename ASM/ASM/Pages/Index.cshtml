@@ -1,0 +1,35 @@
+﻿@page
+@using ASM.Components
+@model ASM.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Movix</h1>
+</div>
+
+
+@(await Html.RenderComponentAsync<MovieList>(RenderMode.ServerPrerendered))
+
+<script src="_framework/blazor.server.js"></script>
+
+<div class="card-columns">
+    @foreach (var movie in Model.Movies)
+    {
+        <div class="card">
+            <div class="card-img" style="background-image: url('@movie.Image');">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@movie.Title</h5>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">
+                    <button data-toggle="modal" data-target="#movieModal" class="btn btn-primary">
+                        More Info
+                    </button>
+                </small>
+            </div>
+        </div>
+    }
+</div>

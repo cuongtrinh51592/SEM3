@@ -1,0 +1,108 @@
+﻿@using ASM.Models
+@using ASM.Services
+@using Microsoft.AspNetCore.Components.Web
+@inject JsonFileMovieService MovieService
+
+<div class="card-columns">
+    @foreach (var movie in MovieService.GetMovies())
+    {
+<div class="card">
+    <div class="card-img" style="background-image: url('@movie.Image');">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">@movie.Title</h5>
+    </div>
+    <div class="card-footer">
+        <small class="text-muted">
+            <button @onclick="(e => SelectMovie(movie.Id))"
+                    data-toggle="modal" data-target="#movieModal" class="btn btn-primary">
+                More Info
+            </button>
+        </small>
+    </div>
+</div>}
+</div>
+
+@if (selectedMovie != null)
+{
+<div class="modal fade" id="movieModal" tabindex="-1" role="dialog" aria-labelledby="movieTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="movieTitle">@selectedMovie.Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-img" style="background-image: url('@selectedMovie.Image');">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@selectedMovie.Description</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (voteCount == 0)
+                {
+<span>Be the first to vote!</span> }
+else
+{
+<span>@voteCount @voteLabel</span>}
+                @for (int i = 1; i < 6; i++)
+                {
+                    var currentStar = i;
+                    if (i <= currentRating)
+                    {
+<span class="fa fa-star checked" @onclick="(e => SubmitRating(currentStar))"></span> }
+else
+{
+<span class="fa fa-star" @onclick="(e => SubmitRating(currentStar))"></span>}
+}
+            </div>
+        </div>
+    </div>
+</div>}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+@code
+{ Movie selectedMovie;
+    string selectedMovieId;
+
+    void SelectMovie(string movieId)
+    {
+        selectedMovieId = movieId;
+        selectedMovie = MovieService.GetMovies().First(x => x.Id == movieId);
+        GetCurrentRating();
+    }
+
+    int currentRating = 0;
+    int voteCount = 0;
+    string voteLabel;
+
+    void GetCurrentRating()
+    {
+        if (selectedMovie.Ratings == null)
+        {
+            currentRating = 0;
+            voteCount = 0;
+        }
+        else
+        {
+            voteCount = selectedMovie.Ratings.Count();
+            voteLabel = voteCount > 1 ? "Votes" : "Vote";
+            currentRating = selectedMovie.Ratings.Sum() / voteCount;
+        }
+
+        System.Console.WriteLine($"Current rating for {selectedMovie.Id}: {currentRating}");
+    }
+
+    void SubmitRating(int rating)
+    {
+        System.Console.WriteLine($"Rating received for {selectedMovie.Id}: {rating}");
+        MovieService.AddRating(selectedMovieId, rating);
+        SelectMovie(selectedMovieId);
+    } 
+}
