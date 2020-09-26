@@ -1,0 +1,25 @@
+﻿@page
+@model ProductManager.Pages.Home.IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to FigureShop</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+<div class="card-columns">
+    @foreach (var product in Model.Products)
+    {
+        <div class="card">
+            <div class="card-img" style="background-image: url('@product.Image');">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@product.Name</h5>
+                <h6>@product.Price</h6>
+            </div>
+        </div>
+    }
+</div>
