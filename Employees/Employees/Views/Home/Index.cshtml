@@ -1,0 +1,30 @@
+﻿@model IQueryable<Employee>
+
+
+<div>
+    <h2 class="text-center p-1 m-1">LIST EMPLOYEE</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th>Name</th>
+                <th>Birthday</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Email</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.Birthday</td>
+                <td>@p.Address</td>
+                <td>@p.Phone</td>
+                <td>@p.Email</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
